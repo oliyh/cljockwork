@@ -1,7 +1,8 @@
 (ns cljockwork.api
   (:use [ring.util.response])
   (:require [cljockwork.scheduler :as scheduler]
-            [clj-http.client :as client]))
+            [clj-http.client :as client]
+            [clj-time.format :as format]))
 
 (defn index []
   (slurp "resources/public/index.html"))
@@ -36,3 +37,9 @@
 (defn validate-task [cron endpoint]
   (response {:schedule (scheduler/validate-schedule cron)
              :endpoint (validate-endpoint endpoint)}))
+
+(defn string-time [event]
+  (assoc event :time (format/unparse (format/formatters :date-hour-minute-second) (:time event))))
+
+(defn recent-events []
+  (map string-time (scheduler/recent-events)))

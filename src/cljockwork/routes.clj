@@ -17,7 +17,9 @@
   (GET "/tasks/:id" [id] (api/view-task id))
   (POST "/tasks/validate" {body :body} (api/validate-task (:schedule body) (:endpoint body)))
   (PUT "/tasks/add" {body :body} (api/schedule-task (:desc body) (:schedule body) (:endpoint body)))
-  (DELETE "/tasks/remove/:id" [id] (api/unschedule-task id)))
+  (DELETE "/tasks/remove/:id" [id] (api/unschedule-task id))
+
+  (GET "/events/" [] (api/recent-events)))
 
 (defroutes app-routes
   (c-route/resources "/")

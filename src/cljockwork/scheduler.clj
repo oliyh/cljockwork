@@ -70,3 +70,6 @@
 
 (defn validate-schedule [schedule]
   (SchedulingPattern/validate schedule))
+
+(defn recent-events []
+  @events)
