@@ -46,7 +46,7 @@
       .append($('<td/>').html(e.schedule))
       .append($('<td/>').append(deleteButton));
 
-      row.click(function() {removeTask(e.id)});
+      deleteButton.click(function() {removeTask(e.id)});
 
       $('#tasks').append(row);
       });
