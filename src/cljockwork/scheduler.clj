@@ -8,18 +8,22 @@
 
 (defonce scheduler (Scheduler.))
 (defonce tasks (atom {}))
+(defonce events (atom []))
 
-(defn task-for [endpoint]
+(defn task-for [{:keys [id endpoint]}]
   (proxy [Task] [] (execute [ctx] (do
-                                    (println "Running task for" endpoint)
-                                    (println endpoint "=" (client/get endpoint))))))
+                                    (swap! events (fn [old]
+                                                    (cons {:id id :time (time/now)} (take 4 old))))
+                                    (println "Running task" id ":" endpoint)
+                                    (client/get endpoint)))))
 
 (def task-collector
   (reify TaskCollector
     (getTasks [this]
       (let [table (TaskTable.)]
         (doseq [task (map val @tasks)]
-          (.add table (SchedulingPattern. (:schedule task)) (task-for (:endpoint task))))
+          (println task)
+          (.add table (SchedulingPattern. (:schedule task)) (task-for task)))
         table))))
 
 (defn start []
