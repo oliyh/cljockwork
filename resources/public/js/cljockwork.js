@@ -23,11 +23,11 @@ function removeTask(id) {
 	url: '/tasks/remove/' + id,
 	type: 'DELETE',
 	contentType: 'application/json',
-	success: populateTasks
+	success: function() { populateTasks(false); }
     });
 }
 
-function populateTasks() {
+function populateTasks(continuous) {
 
     $.get('/tasks/')
 	.done(function (data) {
@@ -48,7 +48,9 @@ function populateTasks() {
 	    });
 	})
 	.always(function() {
-	    setTimeout(populateTasks, 5000);
+	    if (continuous) {
+		setTimeout(function() { populateTasks(true) }, 5000);
+	    }
 	});
 }
 
@@ -58,7 +60,7 @@ function addTask() {
 	type: 'PUT',
 	contentType: 'application/json',
 	data: JSON.stringify(formToJson()),
-	success: populateTasks
+	success: function() { populateTasks(false); }
     });
 }
 
@@ -80,5 +82,5 @@ function validateTask() {
 
 $(document).ready(function () {
     updateStatus();
-    populateTasks();
+    populateTasks(true);
 });
