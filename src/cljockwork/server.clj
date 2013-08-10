@@ -27,6 +27,6 @@
       (.stop)
       (.start))))
 
-(defn -main [port]
-  (let [server (start-server (Integer. port))]
+(defn -main []
+  (let [server (start-server)]
     server))
