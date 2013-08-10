@@ -11,6 +11,12 @@
   (.stop scheduler)
   (println "Stopped scheduler"))
 
+(defn status []
+  (let [started? (.isStarted scheduler)]
+    {:status (if started? :running :stopped)
+     :running-tasks (if started? (count (.getExecutingTasks scheduler)) 0)
+     :timezone (-> scheduler .getTimeZone .getID)}))
+
 (defn schedule [cron f]
   (let [id (.schedule scheduler cron f)]
     {:id id

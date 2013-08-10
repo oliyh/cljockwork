@@ -5,11 +5,22 @@
 (defn index []
   (response {:response "Hello World"}))
 
-(defn list-all-jobs []
+(defn current-status []
+  (response (scheduler/status)))
+
+(defn start []
+  (scheduler/start)
+  (current-status))
+
+(defn stop []
+  (scheduler/stop)
+  (current-status))
+
+(defn list-all-tasks []
   (response []))
 
-(defn view-job [id]
-  (scheduler/view id))
+(defn view-task [id]
+  (response (scheduler/view id)))
 
 (defn schedule-task [cron task-endpoint]
-  (scheduler/schedule cron #(println "Running task for " task-endpoint)))
+  (response (scheduler/schedule cron #(println "Running task for" task-endpoint))))

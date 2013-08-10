@@ -8,9 +8,14 @@
 
 (defroutes site
   (GET "/" [] (api/index))
-  (GET "/jobs/" [] (api/list-all-jobs))
-  (GET "/jobs/:id" [id] (api/view-job id))
-  (GET "/jobs/add/:endpoint" [endpoint] (api/schedule-task "* * * * *" endpoint)))
+
+  (GET "/stop" [] (api/stop))
+  (GET "/start" [] (api/start))
+  (GET "/status" [] (api/current-status))
+
+  (GET "/tasks/" [] (api/list-all-tasks))
+  (GET "/tasks/:id" [id] (api/view-task id))
+  (GET "/tasks/add/:endpoint" [endpoint] (api/schedule-task "* * * * *" endpoint)))
 
 (defroutes app-routes
   (c-route/resources "/")
