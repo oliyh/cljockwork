@@ -7,7 +7,7 @@
                  [ring "1.2.0"]
                  [ring-server "0.2.8" :exclusions [[org.clojure/clojure]
                                                    [ring]]]
-
+                 [ring/ring-json "0.2.0"]
                  [compojure "1.1.5" :exclusions [[org.clojure/clojure] [ring/ring-core]]]
                  [cheshire "5.2.0"]
                  [org.clojars.gmazelier/cron4j "2.2.5"]]

@@ -1,5 +1,6 @@
 (ns cljockwork.ring
-  (:require [cljockwork.routes :as routes]))
+  (:require [cljockwork.routes :as routes]
+            [ring.middleware.json :as ring-json]))
 
 (defn init []
   (println "Cljockwork is starting"))
@@ -11,7 +12,6 @@
 
 (defn get-handler [app]
   (-> app
-      ;; middleware wrappers go here
-      ))
+      (ring-json/wrap-json-response app)))
 
 (def war-handler (get-handler app))

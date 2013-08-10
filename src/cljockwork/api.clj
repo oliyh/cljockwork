@@ -1,4 +1,5 @@
-(ns cljockwork.api)
+(ns cljockwork.api
+  (:use [ring.util.response]))
 
 (defn index []
-  (str "Hello World"))
+  (response {:response "Hello World"}))
