@@ -6,93 +6,45 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
   </head>
   <body>
-    <h1>Cljockwork</h1>
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1">
+	<h1>Cljockwork</h1>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/cljockwork.js"></script>
 
-    <script type="text/javascript">
-      function updateStatus() {
-      $.get('/status', function (data) {
-      $('#status').html(JSON.stringify(data));
-      });
-      }
+	<div id="status-view" class="panel">
+	  <h2>Status</h2>
+	  <div id="status" class="well">
+	    Populating...
+	  </div>
+	  <button onclick="stopScheduler();" class="btn btn-danger">Stop scheduler</button>
+	  <button onclick="startScheduler();" class="btn btn-success">Start scheduler</button>
+	</div>
 
-      function stopScheduler() {
-      $.post('/stop', updateStatus);
-      }
+	<div id="tasks-view" class="panel">
+	  <h2>Tasks</h2>
+	  <table class="table table-striped table-condensed">
+	    <thead>
+	      <tr><th>Id</th><th>Description</th><th>Endpoint</th><th>Schedule</th><th>Delete</th></tr>
+	    </thead>
+	    <tbody id="tasks"><tbody>
+	  </table>
 
-      function startScheduler() {
-      $.post('/start', updateStatus);
-      }
-
-      function removeTask(id) {
-      $.ajax({
-      url: '/tasks/remove/' + id,
-      type: 'DELETE',
-      contentType: 'application/json',
-      success: populateTasks
-      });
-      }
-
-      function populateTasks() {
-      $.get('/tasks/', function (data) {
-      $('#tasks').empty();
-      $.each(data, function(i, e) {
-      var deleteButton = $('<button class="btn btn-danger btn-xs">DELETE</button>');
-      var row = $('<tr/>')
-      .append($('<td/>').html(e.id))
-      .append($('<td/>').html(e.desc))
-      .append($('<td/>').html(e.endpoint))
-      .append($('<td/>').html(e.schedule))
-      .append($('<td/>').append(deleteButton));
-
-      deleteButton.click(function() {removeTask(e.id)});
-
-      $('#tasks').append(row);
-      });
-      });
-      }
-
-      function addTask() {
-      $.ajax({
-      url: '/tasks/add',
-      type: 'PUT',
-      contentType: 'application/json',
-      data: JSON.stringify({desc: $('#desc').val(), endpoint: $('#endpoint').val(), schedule: $('#schedule').val()}),
-      success: populateTasks
-      });
-      }
-
-      $(document).ready(function () {
-      updateStatus();
-      populateTasks();
-      });
-    </script>
-
-    <div id="status-view" class="panel">
-      <h2>Status</h2>
-      <div id="status" class="well">
-	Populating...
+	  <form id="addTaskForm" class="form-inline" onsubmit="return false;">
+	    <div id="desc-group" style="display: inline-block;">
+	      <input id="desc" name="desc" type="text" style="width: 200px;" class="form-control" placeholder="Description">
+	    </div>
+	    <div id="endpoint-group" style="display: inline-block;">
+	      <input id="endpoint" name="endpoint" type="text" style="width: 200px;" class="form-control" placeholder="Endpoint">
+	    </div>
+	    <div id="schedule-group" style="display: inline-block;">
+	      <input id="schedule" name="schedule" type="text" style="width: 200px;" class="form-control" placeholder="Cron expression">
+	    </div>
+	    <button id="validate" onclick="validateTask();" class="btn btn-info">Validate</button>
+	    <button type="submit" onclick="addTask();" class="btn btn-success">Add task</button>
+	  </form>
+	</div>
       </div>
-      <button onclick="stopScheduler();" class="btn btn-danger">Stop scheduler</button>
-      <button onclick="startScheduler();" class="btn btn-success">Start scheduler</button>
-    </div>
-
-    <div id="tasks-view" class="panel">
-      <h2>Tasks</h2>
-      <table class="table table-striped table-condensed">
-	<thead>
-	  <tr><th>Id</th><th>Description</th><th>Endpoint</th><th>Schedule</th><th>Delete</th></tr>
-	</thead>
-	<tbody id="tasks"><tbody>
-      </table>
-      <hr/>
-      <form id="addTaskForm" class="form-inline" onsubmit="addTask(); return false;">
-	<input id="desc" name="desc" type="text" style="width: 200px;" class="form-control" placeholder="Description">
-	<input id="endpoint" name="endpoint" type="text" style="width: 200px;" class="form-control" placeholder="Endpoint">
-	<input id="schedule" name="schedule" type="text" style="width: 200px;" class="form-control" placeholder="Cron expression">
-	<button type="submit" class="btn btn-success">Add task</button>
-      </form>
-    </div>
   </body>
 </html>

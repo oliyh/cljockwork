@@ -3,7 +3,6 @@
   (:import [it.sauronsoftware.cron4j Scheduler Task SchedulingPattern TaskCollector TaskTable]
            [java.util UUID]))
 
-(defonce scheduler (Scheduler.))
 (defonce tasks (atom {}))
 
 (defn task-for [endpoint]
@@ -53,3 +52,6 @@
 
 (defn view-all []
   (map val @tasks))
+
+(defn validate-schedule [schedule]
+  (SchedulingPattern/validate schedule))

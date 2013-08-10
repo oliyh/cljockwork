@@ -1,6 +1,7 @@
 (ns cljockwork.api
   (:use [ring.util.response])
-  (:require [cljockwork.scheduler :as scheduler]))
+  (:require [cljockwork.scheduler :as scheduler]
+            [clj-http.client :as client]))
 
 (defn index []
   (slurp "resources/public/index.html"))
@@ -27,3 +28,11 @@
 
 (defn unschedule-task [id]
   (response (scheduler/unschedule id)))
+
+(defn validate-endpoint [endpoint]
+  (try (= 200 (:status (client/get endpoint)))
+       (catch Exception _ false)))
+
+(defn validate-task [cron endpoint]
+  (response {:schedule (scheduler/validate-schedule cron)
+             :endpoint (validate-endpoint endpoint)}))
