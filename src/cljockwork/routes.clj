@@ -7,7 +7,10 @@
             [cljockwork.api :as api]))
 
 (defroutes site
-  (GET "/" [] (api/index)))
+  (GET "/" [] (api/index))
+  (GET "/jobs/" [] (api/list-all-jobs))
+  (GET "/jobs/:id" [id] (api/view-job id))
+  (GET "/jobs/add/:endpoint" [endpoint] (api/schedule-task "* * * * *" endpoint)))
 
 (defroutes app-routes
   (c-route/resources "/")
