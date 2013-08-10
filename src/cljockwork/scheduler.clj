@@ -40,6 +40,11 @@
     (swap! tasks assoc (:id task) task)
     task))
 
+(defn unschedule [id]
+  (let [task (get @tasks id)]
+    (swap! tasks dissoc id)
+    task))
+
 (defn view [id]
   (get @tasks id))
 

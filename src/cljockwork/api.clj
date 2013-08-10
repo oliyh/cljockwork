@@ -24,3 +24,6 @@
 
 (defn schedule-task [desc cron task-endpoint]
   (response (scheduler/schedule desc cron task-endpoint)))
+
+(defn unschedule-task [id]
+  (response (scheduler/unschedule id)))
