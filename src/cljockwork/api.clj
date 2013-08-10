@@ -3,7 +3,7 @@
   (:require [cljockwork.scheduler :as scheduler]))
 
 (defn index []
-  (response {:response "Hello World"}))
+  (slurp "resources/public/index.html"))
 
 (defn current-status []
   (response (scheduler/status)))
