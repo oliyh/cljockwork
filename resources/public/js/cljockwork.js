@@ -28,22 +28,28 @@ function removeTask(id) {
 }
 
 function populateTasks() {
-    $.get('/tasks/', function (data) {
-	$('#tasks').empty();
-	$.each(data, function(i, e) {
-	    var deleteButton = $('<button class="btn btn-danger btn-xs">DELETE</button>');
-	    var row = $('<tr/>')
-		.append($('<td/>').html(e.id))
-		.append($('<td/>').html(e.desc))
-		.append($('<td/>').html(e.endpoint))
-		.append($('<td/>').html(e.schedule))
-		.append($('<td/>').append(deleteButton));
 
-	    deleteButton.click(function() {removeTask(e.id)});
+    $.get('/tasks/')
+	.done(function (data) {
+	    $('#tasks').empty();
+	    $.each(data, function(i, e) {
+		var deleteButton = $('<button class="btn btn-danger btn-xs">DELETE</button>');
+		var row = $('<tr/>')
+		    .append($('<td/>').html(e.id))
+		    .append($('<td/>').html(e.desc))
+		    .append($('<td/>').html(e.endpoint))
+		    .append($('<td/>').html(e.schedule))
+		    .append($('<td/>').html(e.interval + 's'))
+		    .append($('<td/>').append(deleteButton));
 
-	    $('#tasks').append(row);
+		deleteButton.click(function() {removeTask(e.id)});
+
+		$('#tasks').append(row);
+	    });
+	})
+	.always(function() {
+	    setTimeout(populateTasks, 5000);
 	});
-    });
 }
 
 function addTask() {

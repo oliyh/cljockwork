@@ -1,7 +1,10 @@
 (ns cljockwork.scheduler
-  (:require [clj-http.client :as client])
-  (:import [it.sauronsoftware.cron4j Scheduler Task SchedulingPattern TaskCollector TaskTable]
-           [java.util UUID]))
+  (:require [clj-http.client :as client]
+            [clj-time.core :as time])
+  (:import [it.sauronsoftware.cron4j
+            Scheduler Task SchedulingPattern TaskCollector TaskTable Predictor]
+           [java.util UUID]
+           [org.joda.time DateTime]))
 
 (defonce scheduler (Scheduler.))
 (defonce tasks (atom {}))
@@ -48,11 +51,18 @@
     (swap! tasks dissoc id)
     task))
 
+(defn add-prediction [now task]
+  (let [prediction (.nextMatchingTime (Predictor. (:schedule task)))]
+    (assoc task
+      :prediction prediction
+      :interval (time/in-secs (time/interval now (DateTime. prediction))))))
+
 (defn view [id]
-  (get @tasks id))
+  (add-prediction (time/now) (get @tasks id)))
 
 (defn view-all []
-  (map val @tasks))
+  (let [now (time/now)]
+    (map #(add-prediction now (val %)) @tasks)))
 
 (defn validate-schedule [schedule]
   (SchedulingPattern/validate schedule))
