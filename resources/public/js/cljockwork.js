@@ -27,8 +27,23 @@ function removeTask(id) {
     });
 }
 
-function populateTasks(continuous) {
+function populateEvents() {
+    $.get('/events/')
+	.done(function (data) {
+	    $('#events').empty();
+	    $.each(data, function(i, e) {
+		var row = $('<tr/>')
+		    .append($('<td/>').html(e.id))
+		    .append($('<td/>').html(e.time));
+		$('#events').append(row);
+	    });
+	})
+	.always(function() {
+	    setTimeout(populateEvents, 5000);
+	});
+}
 
+function populateTasks(continuous) {
     $.get('/tasks/')
 	.done(function (data) {
 	    $('#tasks').empty();
@@ -83,4 +98,5 @@ function validateTask() {
 $(document).ready(function () {
     updateStatus();
     populateTasks(true);
+    populateEvents();
 });
