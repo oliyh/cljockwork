@@ -1,0 +1,19 @@
+.label-info a {
+    color: white;
+}
+
+.label {
+    margin-right: 4px;
+}
+
+.form-inline div {
+    display: inline-block;
+}
+
+#addTaskForm input {
+    width: 280px;
+}
+
+input#schedule {
+    width: 100px;
+}

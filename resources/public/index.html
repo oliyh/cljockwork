@@ -4,6 +4,7 @@
     <title>Cljockwork</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/cljockwork.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <div class="row">
@@ -12,6 +13,20 @@
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/cljockwork.js"></script>
+
+	<p>
+	  Cljockwork is a REST API for cron4j, written in Clojure.
+	</p>
+	<p>
+	  <span class="label label-info">
+	    <a href="http://oliy.co.uk" title="oliy.co.uk">oliy.co.uk</a>
+	  </span>
+	  <span class="label label-info">
+	    <a href="https://github.com/oliyh/cljockwork" title="Cljockwork on GitHub">
+	      Cljockwork on GitHub
+	    </a>
+	  </span>
+	</p>
 
 	<div id="status-view" class="panel">
 	  <h2>Status</h2>
@@ -32,14 +47,14 @@
 	  </table>
 
 	  <form id="addTaskForm" class="form-inline" onsubmit="return false;">
-	    <div id="desc-group" style="display: inline-block;">
-	      <input id="desc" name="desc" type="text" style="width: 200px;" class="form-control" placeholder="Description">
+	    <div id="desc-group">
+	      <input id="desc" name="desc" type="text" class="form-control" placeholder="Description">
 	    </div>
-	    <div id="endpoint-group" style="display: inline-block;">
-	      <input id="endpoint" name="endpoint" type="text" style="width: 200px;" class="form-control" placeholder="Endpoint">
+	    <div id="endpoint-group">
+	      <input id="endpoint" name="endpoint" type="text" class="form-control" placeholder="Endpoint">
 	    </div>
-	    <div id="schedule-group" style="display: inline-block;">
-	      <input id="schedule" name="schedule" type="text" style="width: 200px;" class="form-control" placeholder="Cron expression">
+	    <div id="schedule-group">
+	      <input id="schedule" name="schedule" type="text" class="form-control" placeholder="Cron expression">
 	    </div>
 	    <button id="validate" onclick="validateTask();" class="btn btn-info">Validate</button>
 	    <button type="submit" onclick="addTask();" class="btn btn-success">Add task</button>

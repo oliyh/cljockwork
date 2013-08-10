@@ -1,6 +1,6 @@
 # cljockwork
 
-A REST API for cron4j, written in Clojure
+A REST API for cron4j, written in Clojure.
 Live demo at http://cljockwork.oliy.co.uk
 
 ### Getting started
