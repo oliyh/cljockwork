@@ -15,9 +15,13 @@
 
   (GET "/tasks/" [] (api/list-all-tasks))
   (GET "/tasks/:id" [id] (api/view-task id))
-  (GET "/tasks/add/:endpoint" [endpoint] (api/schedule-task (str endpoint " cron job") "* * * * *" endpoint))
-  (GET "/tasks/remove/:id" [id] (api/unschedule-task id)))
 
+  (GET "/tasks/add/:endpoint" [endpoint] (api/schedule-task (str endpoint " cron job") "* * * * *" endpoint))
+  (PUT "/tasks/add" {endpoint :endpoint schedule :schedule desc :desc}
+       (api/schedule-task desc schedule endpoint))
+
+  (GET "/tasks/remove/:id" [id] (api/unschedule-task id))
+  (DELETE "/tasks/remove/:id" [id] (api/unschedule-task id)))
 
 (defroutes app-routes
   (c-route/resources "/")

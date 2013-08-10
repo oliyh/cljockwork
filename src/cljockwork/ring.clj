@@ -15,6 +15,7 @@
 
 (defn get-handler [app]
   (-> app
-      (ring-json/wrap-json-response app)))
+      (ring-json/wrap-json-response)
+      (ring-json/wrap-json-body {:keywords? true})))
 
 (def war-handler (get-handler app))
