@@ -1,1 +1,43 @@
-Hi there
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cljockwork</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <h1>Cljockwork</h1>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      function updateStatus() {
+      $.get('/status', function (data) {
+      $('#status').html(JSON.stringify(data));
+      });
+      }
+
+      function stopScheduler() {
+      $.post('/stop', updateStatus);
+      }
+
+      function startScheduler() {
+      $.post('/start', updateStatus);
+      }
+
+      $(document).ready(function () {
+      updateStatus();
+      });
+    </script>
+
+    <div id="status-view" class="panel">
+      <h2>Status</h2>
+      <p>Status is</p>
+      <div id="status" class="well">
+	Populating...
+      </div>
+      <button onclick="stopScheduler();" class="btn btn-danger">Stop scheduler</button>
+      <button onclick="startScheduler();" class="btn btn-success">Start scheduler</button>
+    </div>
+  </body>
+</html>

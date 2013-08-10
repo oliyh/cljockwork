@@ -10,7 +10,11 @@
   (GET "/" [] (api/index))
 
   (GET "/stop" [] (api/stop))
+  (POST "/stop" [] (api/stop))
+
   (GET "/start" [] (api/start))
+  (POST "/start" [] (api/start))
+
   (GET "/status" [] (api/current-status))
 
   (GET "/tasks/" [] (api/list-all-tasks))
