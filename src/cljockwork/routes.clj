@@ -9,22 +9,13 @@
 (defroutes site
   (GET "/" [] (api/index))
 
-  (GET "/stop" [] (api/stop))
   (POST "/stop" [] (api/stop))
-
-  (GET "/start" [] (api/start))
   (POST "/start" [] (api/start))
-
   (GET "/status" [] (api/current-status))
 
   (GET "/tasks/" [] (api/list-all-tasks))
   (GET "/tasks/:id" [id] (api/view-task id))
-
-  (GET "/tasks/add/:endpoint" [endpoint] (api/schedule-task (str endpoint " cron job") "* * * * *" endpoint))
-  (PUT "/tasks/add" {endpoint :endpoint schedule :schedule desc :desc}
-       (api/schedule-task desc schedule endpoint))
-
-  (GET "/tasks/remove/:id" [id] (api/unschedule-task id))
+  (PUT "/tasks/add" {body :body} (api/schedule-task (:desc body) (:schedule body) (:endpoint body)))
   (DELETE "/tasks/remove/:id" [id] (api/unschedule-task id)))
 
 (defroutes app-routes

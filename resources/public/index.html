@@ -25,19 +25,52 @@
       $.post('/start', updateStatus);
       }
 
+      function populateTasks() {
+      $.get('/tasks/', function (data) {
+      $.each(data, function(i, e) {
+      $('#tasks').empty().append($('<li/>')
+      .attr('class', 'list-group-item')
+      .html(e.desc + ': ' + e.endpoint + '<span class="badge">' + e.schedule + '</span>'));
+      });
+      });
+      }
+
+      function addTask() {
+      $.ajax({
+      url: '/tasks/add',
+      type: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify({desc: $('#desc').val(), endpoint: $('#endpoint').val(), schedule: $('#schedule').val()}),
+      success: populateTasks
+      });
+      }
+
       $(document).ready(function () {
       updateStatus();
+      populateTasks();
       });
     </script>
 
     <div id="status-view" class="panel">
       <h2>Status</h2>
-      <p>Status is</p>
       <div id="status" class="well">
 	Populating...
       </div>
       <button onclick="stopScheduler();" class="btn btn-danger">Stop scheduler</button>
       <button onclick="startScheduler();" class="btn btn-success">Start scheduler</button>
+    </div>
+
+    <div id="tasks-view" class="panel">
+      <h2>Tasks</h2>
+      <ul id="tasks" class="list-group">
+      </ul>
+      <hr/>
+      <form id="addTaskForm" class="form-inline" onsubmit="addTask(); return false;">
+	<input id="desc" name="desc" type="text" style="width: 200px;" class="form-control" placeholder="Description">
+	<input id="endpoint" name="endpoint" type="text" style="width: 200px;" class="form-control" placeholder="Endpoint">
+	<input id="schedule" name="schedule" type="text" style="width: 200px;" class="form-control" placeholder="Cron expression">
+	<button type="submit" class="btn btn-success">Add task</button>
+      </form>
     </div>
   </body>
 </html>

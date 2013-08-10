@@ -1,6 +1,7 @@
 (ns cljockwork.ring
   (:require [cljockwork.routes :as routes]
             [ring.middleware.json :as ring-json]
+            [compojure.handler :as handler]
             [cljockwork.scheduler :as scheduler]))
 
 (defn init []
@@ -14,8 +15,8 @@
 (def app routes/all-routes)
 
 (defn get-handler [app]
-  (-> app
-      (ring-json/wrap-json-response)
-      (ring-json/wrap-json-body {:keywords? true})))
+  (-> (handler/api app)
+      (ring-json/wrap-json-body {:keywords? true})
+      (ring-json/wrap-json-response)))
 
 (def war-handler (get-handler app))
