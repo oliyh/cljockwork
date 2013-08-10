@@ -22,9 +22,10 @@ Viewing tasks
 
 	GET http://localhost:8080/tasks/
 	GET http://localhost:8080/tasks/:id
-	
-Adding and removing tasks
-	
+
+Adding, removing and validating tasks
+
+	POST http://localhost:8080/tasks/validate {:desc "Task description" :schedule "* * * * *" :endpoint "http://path/to/endpoint"}
 	PUT http://localhost:8080/tasks/add {:desc "Task description" :schedule "* * * * *" :endpoint "http://path/to/endpoint"}
 	DELETE http://localhost:8080/tasks/:id
 
