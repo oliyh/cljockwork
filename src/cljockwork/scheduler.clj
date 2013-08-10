@@ -3,6 +3,7 @@
   (:import [it.sauronsoftware.cron4j Scheduler Task SchedulingPattern TaskCollector TaskTable]
            [java.util UUID]))
 
+(defonce scheduler (Scheduler.))
 (defonce tasks (atom {}))
 
 (defn task-for [endpoint]
