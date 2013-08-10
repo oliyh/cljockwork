@@ -1,11 +1,25 @@
 (ns cljockwork.scheduler
-  (:import [it.sauronsoftware.cron4j Scheduler Task SchedulingPattern]))
+  (:import [it.sauronsoftware.cron4j Scheduler Task SchedulingPattern TaskCollector TaskTable]
+           [java.util UUID]))
 
 (defonce scheduler (Scheduler.))
-(def tasks (atom {}))
+(defonce tasks (atom {}))
+
+(defn task-for [endpoint]
+  (proxy [Task] [] (execute [ctx] (println "Running task for" endpoint))))
+
+(def task-collector
+  (reify TaskCollector
+    (getTasks [this]
+      (let [table (TaskTable.)]
+        (doseq [task (map val @tasks)]
+          (.add table (SchedulingPattern. (:schedule task)) (task-for (:endpoint task))))
+        table))))
 
 (defn start []
-  (.start scheduler)
+  (doto scheduler
+    (.addTaskCollector task-collector)
+    (.start))
   (println "Started scheduler"))
 
 (defn stop []
@@ -18,11 +32,8 @@
      :running-tasks (if started? (count (.getExecutingTasks scheduler)) 0)
      :timezone (-> scheduler .getTimeZone .getID)}))
 
-(defn task-for [endpoint]
-  (proxy [Task] [] (execute [ctx] (println "Running task for" endpoint))))
-
 (defn schedule [desc scheduling-pattern endpoint]
-  (let [task {:id (.schedule scheduler scheduling-pattern (task-for endpoint))
+  (let [task {:id (str (UUID/randomUUID))
               :desc desc
               :endpoint endpoint
               :schedule scheduling-pattern}]
