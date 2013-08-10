@@ -11,6 +11,7 @@
                  [ring/ring-json "0.2.0"]
                  [compojure "1.1.5" :exclusions [[org.clojure/clojure] [ring/ring-core]]]
                  [cheshire "5.2.0"]
+                 [clj-http "0.7.6"]
                  [org.clojars.gmazelier/cron4j "2.2.5"]]
   :plugins [[lein-ring "0.8.3" :exclusions [org.clojure/clojure]]]
   :profiles {:production

@@ -1,4 +1,5 @@
 (ns cljockwork.scheduler
+  (:require [clj-http.client :as client])
   (:import [it.sauronsoftware.cron4j Scheduler Task SchedulingPattern TaskCollector TaskTable]
            [java.util UUID]))
 
@@ -6,7 +7,9 @@
 (defonce tasks (atom {}))
 
 (defn task-for [endpoint]
-  (proxy [Task] [] (execute [ctx] (println "Running task for" endpoint))))
+  (proxy [Task] [] (execute [ctx] (do
+                                    (println "Running task for" endpoint)
+                                    (println endpoint "=" (client/get endpoint))))))
 
 (def task-collector
   (reify TaskCollector
