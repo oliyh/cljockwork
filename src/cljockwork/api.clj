@@ -17,10 +17,10 @@
   (current-status))
 
 (defn list-all-tasks []
-  (response []))
+  (response (scheduler/view-all)))
 
 (defn view-task [id]
   (response (scheduler/view id)))
 
-(defn schedule-task [cron task-endpoint]
-  (response (scheduler/schedule cron #(println "Running task for" task-endpoint))))
+(defn schedule-task [desc cron task-endpoint]
+  (response (scheduler/schedule desc cron task-endpoint)))

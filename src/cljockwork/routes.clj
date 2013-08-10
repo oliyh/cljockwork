@@ -15,7 +15,7 @@
 
   (GET "/tasks/" [] (api/list-all-tasks))
   (GET "/tasks/:id" [id] (api/view-task id))
-  (GET "/tasks/add/:endpoint" [endpoint] (api/schedule-task "* * * * *" endpoint)))
+  (GET "/tasks/add/:endpoint" [endpoint] (api/schedule-task (str endpoint " cron job") "* * * * *" endpoint)))
 
 (defroutes app-routes
   (c-route/resources "/")

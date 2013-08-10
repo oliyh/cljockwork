@@ -1,7 +1,8 @@
 (ns cljockwork.scheduler
-  (:import [it.sauronsoftware.cron4j Scheduler]))
+  (:import [it.sauronsoftware.cron4j Scheduler Task SchedulingPattern]))
 
 (defonce scheduler (Scheduler.))
+(def tasks (atom {}))
 
 (defn start []
   (.start scheduler)
@@ -17,10 +18,19 @@
      :running-tasks (if started? (count (.getExecutingTasks scheduler)) 0)
      :timezone (-> scheduler .getTimeZone .getID)}))
 
-(defn schedule [cron f]
-  (let [id (.schedule scheduler cron f)]
-    {:id id
-     :cron cron}))
+(defn task-for [endpoint]
+  (proxy [Task] [] (execute [ctx] (println "Running task for" endpoint))))
+
+(defn schedule [desc scheduling-pattern endpoint]
+  (let [task {:id (.schedule scheduler scheduling-pattern (task-for endpoint))
+              :desc desc
+              :endpoint endpoint
+              :schedule scheduling-pattern}]
+    (swap! tasks assoc (:id task) task)
+    task))
 
 (defn view [id]
-  (.getTask scheduler id))
+  (get @tasks id))
+
+(defn view-all []
+  (map val @tasks))
