@@ -6,7 +6,6 @@
            [java.util UUID]
            [org.joda.time DateTime]))
 
-(defonce scheduler (Scheduler.))
 (defonce tasks (atom {}))
 (defonce events (atom []))
 
@@ -26,10 +25,11 @@
           (.add table (SchedulingPattern. (:schedule task)) (task-for task)))
         table))))
 
+(defonce scheduler (doto (Scheduler.)
+                     (.addTaskCollector task-collector)))
+
 (defn start []
-  (doto scheduler
-    (.addTaskCollector task-collector)
-    (.start))
+  (.start scheduler)
   (println "Started scheduler"))
 
 (defn stop []
