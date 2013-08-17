@@ -1,19 +1,22 @@
 function updateStatus() {
     $.get('/status', function (data) {
-	$('#status').html(JSON.stringify(data));
+	$('#status').html(JSON.stringify(data))
+	if (data.status == 'stopped') {
+	    $('#stopButton').addClass('hidden');
+	    $('#startButton').removeClass('hidden');
+	} else {
+	    $('#startButton').addClass('hidden');
+	    $('#stopButton').removeClass('hidden');
+	}
     });
 }
 
 function stopScheduler() {
     $.post('/stop', updateStatus);
-    $('#stopButton').addClass('hidden');
-    $('#startButton').removeClass('hidden');
 }
 
 function startScheduler() {
     $.post('/start', updateStatus);
-    $('#startButton').addClass('hidden');
-    $('#stopButton').removeClass('hidden');
 }
 
 function formToJson() {
@@ -79,7 +82,7 @@ function populateTasks(continuous) {
 		    .append($('<td/>').html(e.desc))
 		    .append($('<td/>').html(e.endpoint))
 		    .append($('<td/>').html(e.schedule))
-		    .append($('<td/>').html(e.interval + 's'))
+		    .append($('<td/>').html((undefined == e.interval) ? 'N/A' : e.interval + 's'))
 		    .append($('<td/>').append(pauseButton))
 		    .append($('<td/>').append(deleteButton));
 

@@ -35,8 +35,11 @@
   (.stop scheduler)
   (println "Stopped scheduler"))
 
+(defn started? []
+  (.isStarted scheduler))
+
 (defn status []
-  (let [started? (.isStarted scheduler)]
+  (let [started? (started?)]
     {:status (if started? :running :stopped)
      :running-tasks (if started? (count (.getExecutingTasks scheduler)) 0)
      :timezone (-> scheduler .getTimeZone .getID)}))
@@ -67,10 +70,12 @@
   (set-state id :active))
 
 (defn add-prediction [now task]
-  (let [prediction (.nextMatchingTime (Predictor. (:schedule task)))]
-    (assoc task
-      :prediction prediction
-      :interval (time/in-secs (time/interval now (DateTime. prediction))))))
+  (if (or (not (started?)) (= :paused (:state task)))
+    task
+    (let [prediction (.nextMatchingTime (Predictor. (:schedule task)))]
+      (assoc task
+        :prediction prediction
+        :interval (time/in-secs (time/interval now (DateTime. prediction)))))))
 
 (defn view [id]
   (add-prediction (time/now) (get @tasks id)))
