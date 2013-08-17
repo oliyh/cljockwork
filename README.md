@@ -29,6 +29,11 @@ Adding, removing and validating tasks
 	PUT http://localhost:8080/tasks/add {:desc "Task description" :schedule "* * * * *" :endpoint "http://path/to/endpoint"}
 	DELETE http://localhost:8080/tasks/:id/remove
 
+Pausing and activating tasks
+
+	POST http://localhost:8080/tasks/:id/pause
+	POST http://localhost:8080/tasks/:id/activate
+
 ### License
 
 Distributed under the Eclipse Public License, the same as Clojure.
