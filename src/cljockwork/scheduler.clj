@@ -12,10 +12,10 @@
 (defmulti hit-endpoint (fn [{method :method}] method))
 
 (defmethod hit-endpoint :get [{endpoint :endpoint}]
-  (println "get" endpoint "=" (client/get endpoint)))
+  (client/get endpoint))
 
 (defmethod hit-endpoint :post [{endpoint :endpoint}]
-  (println "post" endpoint "=" (client/post endpoint)))
+  (client/post endpoint))
 
 
 (defn supported-methods []
