@@ -12,6 +12,7 @@
   (POST "/stop" [] (api/stop))
   (POST "/start" [] (api/start))
   (GET "/status" [] (api/current-status))
+  (GET "/config" [] (api/config))
 
   (GET "/tasks/" [] (api/list-all-tasks))
   (GET "/tasks/:id" [id] (api/view-task id))

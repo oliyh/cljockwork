@@ -59,6 +59,17 @@ function populateEvents() {
 	});
 }
 
+function populateMethods() {
+    $.get('/config', function (data) {
+	$.each(data.methods, function(i, e) {
+	    var option = $('<option/>')
+		.val(e)
+		.text(e);
+	    $('#method').append(option);
+	});
+    });
+}
+
 function populateTasks(continuous) {
     $.get('/tasks/')
 	.done(function (data) {
@@ -126,4 +137,5 @@ $(document).ready(function () {
     updateStatus();
     populateTasks(true);
     populateEvents();
+    populateMethods();
 });

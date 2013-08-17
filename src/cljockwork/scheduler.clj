@@ -13,6 +13,9 @@
 (defmethod hit-endpoint :get [{endpoint :endpoint}]
   (println endpoint "=" (client/get endpoint)))
 
+(defn supported-methods []
+  (keys (methods hit-endpoint)))
+
 (defn task-for [{:keys [id endpoint] :as task}]
   (proxy [Task] [] (execute [ctx] (do
                                     (swap! events (fn [old]

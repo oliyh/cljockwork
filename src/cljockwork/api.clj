@@ -49,3 +49,6 @@
 
 (defn recent-events []
   (map string-time (scheduler/recent-events)))
+
+(defn config []
+  (response {:methods (scheduler/supported-methods)}))
