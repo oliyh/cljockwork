@@ -10,8 +10,13 @@
 (defonce events (atom []))
 
 (defmulti hit-endpoint (fn [{method :method}] method))
+
 (defmethod hit-endpoint :get [{endpoint :endpoint}]
-  (println endpoint "=" (client/get endpoint)))
+  (println "get" endpoint "=" (client/get endpoint)))
+
+(defmethod hit-endpoint :post [{endpoint :endpoint}]
+  (println "post" endpoint "=" (client/post endpoint)))
+
 
 (defn supported-methods []
   (keys (methods hit-endpoint)))
