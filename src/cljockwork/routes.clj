@@ -16,7 +16,7 @@
 
   (GET "/tasks/" [] (api/list-all-tasks))
   (GET "/tasks/:id" [id] (api/view-task id))
-  (POST "/tasks/validate" {body :body} (api/validate-task (:schedule body) (:endpoint body)))
+  (POST "/tasks/validate" {body :body} (api/validate-task body))
   (PUT "/tasks/add" {body :body} (api/schedule-task body))
   (DELETE "/tasks/:id/remove" [id] (api/unschedule-task id))
   (POST "/tasks/:id/pause" [id] (api/pause-task id))

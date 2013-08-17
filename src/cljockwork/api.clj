@@ -36,13 +36,13 @@
 (defn activate-task [id]
   (response (scheduler/activate id)))
 
-(defn validate-endpoint [endpoint]
-  (try (= 200 (:status (client/get endpoint)))
+(defn validate-endpoint [method endpoint]
+  (try (= 200 (:status (client/request {:method (keyword method) :url endpoint})))
        (catch Exception _ false)))
 
-(defn validate-task [cron endpoint]
-  (response {:schedule (scheduler/validate-schedule cron)
-             :endpoint (validate-endpoint endpoint)}))
+(defn validate-task [{:keys [schedule method endpoint]}]
+  (response {:schedule (scheduler/validate-schedule schedule)
+             :endpoint (validate-endpoint method endpoint)}))
 
 (defn string-time [event]
   (assoc event :time (format/unparse (format/formatters :date-hour-minute-second) (:time event))))
