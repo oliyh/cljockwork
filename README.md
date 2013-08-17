@@ -25,14 +25,18 @@ Viewing tasks
 
 Adding, removing and validating tasks
 
-	POST http://localhost:8080/tasks/validate {:desc "Task description" :schedule "* * * * *" :endpoint "http://path/to/endpoint"}
-	PUT http://localhost:8080/tasks/add {:desc "Task description" :schedule "* * * * *" :endpoint "http://path/to/endpoint"}
+	POST http://localhost:8080/tasks/validate {:desc "Task description" :schedule "* * * * *" :method :get :endpoint "http://path/to/endpoint"}
+	PUT http://localhost:8080/tasks/add {:desc "Task description" :schedule "* * * * *" :method :get :endpoint "http://path/to/endpoint"}
 	DELETE http://localhost:8080/tasks/:id/remove
 
 Pausing and activating tasks
 
 	POST http://localhost:8080/tasks/:id/pause
 	POST http://localhost:8080/tasks/:id/activate
+
+### Extending
+
+Task actions may be extended by participating in the `hit-endpoint` multimethod.
 
 ### License
 
