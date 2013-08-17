@@ -54,7 +54,8 @@
   (let [started? (started?)]
     {:status (if started? :running :stopped)
      :running-tasks (if started? (count (.getExecutingTasks scheduler)) 0)
-     :timezone (-> scheduler .getTimeZone .getID)}))
+     :timezone (-> scheduler .getTimeZone .getID)
+     :registered-tasks (count @tasks)}))
 
 (defn schedule [desc scheduling-pattern endpoint method]
   (let [task {:id (str (UUID/randomUUID))
