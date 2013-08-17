@@ -27,6 +27,15 @@ function removeTask(id) {
     });
 }
 
+function pauseTask(id) {
+    $.ajax({
+	url: '/tasks/' + id + '/pause',
+	type: 'POST',
+	contentType: 'application/json',
+	success: function() { populateTasks(false); }
+    });
+}
+
 function populateEvents() {
     $.get('/events/')
 	.done(function (data) {
@@ -48,16 +57,23 @@ function populateTasks(continuous) {
 	.done(function (data) {
 	    $('#tasks').empty();
 	    $.each(data, function(i, e) {
-		var deleteButton = $('<button class="btn btn-danger btn-xs">DELETE</button>');
+		var deleteButton = $('<button class="btn btn-danger btn-xs">DELETE</button>')
+		    .click(function() {removeTask(e.id)});
+		var pauseButton = $('<button class="btn btn-xs">PAUSE</button>')
+		    .click(function() {pauseTask(e.id)});
+
+		if (e.state == 'paused') {
+		    pauseButton.text('UNPAUSE').addClass('btn-warning');
+		}
+
 		var row = $('<tr/>')
 		    .append($('<td/>').html(e.id))
 		    .append($('<td/>').html(e.desc))
 		    .append($('<td/>').html(e.endpoint))
 		    .append($('<td/>').html(e.schedule))
 		    .append($('<td/>').html(e.interval + 's'))
-		    .append($('<td/>').append(deleteButton));
-
-		deleteButton.click(function() {removeTask(e.id)});
+		    .append($('<td/>').append(deleteButton))
+		    .append($('<td/>').append(pauseButton));
 
 		$('#tasks').append(row);
 	    });

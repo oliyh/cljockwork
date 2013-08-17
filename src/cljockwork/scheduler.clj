@@ -20,11 +20,10 @@
   (reify TaskCollector
     (getTasks [this]
       (let [table (TaskTable.)]
-        (doseq [task (map val @tasks)]
+        (doseq [task (filter #(= :active (:state %)) (map val @tasks))]
           (println task)
           (.add table (SchedulingPattern. (:schedule task)) (task-for task)))
         table))))
-
 (defonce scheduler (doto (Scheduler.)
                      (.addTaskCollector task-collector)))
 
@@ -46,13 +45,19 @@
   (let [task {:id (str (UUID/randomUUID))
               :desc desc
               :endpoint endpoint
-              :schedule scheduling-pattern}]
+              :schedule scheduling-pattern
+              :state :active}]
     (swap! tasks assoc (:id task) task)
     task))
 
 (defn unschedule [id]
   (let [task (get @tasks id)]
     (swap! tasks dissoc id)
+    task))
+
+(defn pause [id]
+  (let [task (get @tasks id)]
+    (swap! tasks assoc id (assoc task :state :paused))
     task))
 
 (defn add-prediction [now task]

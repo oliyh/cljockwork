@@ -18,6 +18,7 @@
   (POST "/tasks/validate" {body :body} (api/validate-task (:schedule body) (:endpoint body)))
   (PUT "/tasks/add" {body :body} (api/schedule-task (:desc body) (:schedule body) (:endpoint body)))
   (DELETE "/tasks/:id/remove" [id] (api/unschedule-task id))
+  (POST "/tasks/:id/pause" [id] (api/pause-task id))
 
   (GET "/events/" [] (api/recent-events)))
 
