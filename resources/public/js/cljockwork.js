@@ -20,7 +20,7 @@ function formToJson() {
 
 function removeTask(id) {
     $.ajax({
-	url: '/tasks/remove/' + id,
+	url: '/tasks/' + id + '/remove',
 	type: 'DELETE',
 	contentType: 'application/json',
 	success: function() { populateTasks(false); }
