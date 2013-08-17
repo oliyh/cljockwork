@@ -6,10 +6,14 @@ function updateStatus() {
 
 function stopScheduler() {
     $.post('/stop', updateStatus);
+    $('#stopButton').addClass('hidden');
+    $('#startButton').removeClass('hidden');
 }
 
 function startScheduler() {
     $.post('/start', updateStatus);
+    $('#startButton').addClass('hidden');
+    $('#stopButton').removeClass('hidden');
 }
 
 function formToJson() {
