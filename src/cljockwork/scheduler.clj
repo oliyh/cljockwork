@@ -9,12 +9,16 @@
 (defonce tasks (atom {}))
 (defonce events (atom []))
 
-(defn task-for [{:keys [id endpoint]}]
+(defmulti hit-endpoint (fn [{method :method}] method))
+(defmethod hit-endpoint :get [{endpoint :endpoint}]
+  (println endpoint "=" (client/get endpoint)))
+
+(defn task-for [{:keys [id endpoint] :as task}]
   (proxy [Task] [] (execute [ctx] (do
                                     (swap! events (fn [old]
                                                     (cons {:id id :time (time/now)} (take 4 old))))
                                     (println "Running task" id ":" endpoint)
-                                    (client/get endpoint)))))
+                                    (hit-endpoint task)))))
 
 (def task-collector
   (reify TaskCollector
@@ -49,7 +53,8 @@
               :desc desc
               :endpoint endpoint
               :schedule scheduling-pattern
-              :state :active}]
+              :state :active
+              :method :get}]
     (swap! tasks assoc (:id task) task)
     task))
 
