@@ -24,8 +24,8 @@
 (defn view-task [id]
   (response (scheduler/view id)))
 
-(defn schedule-task [desc cron task-endpoint]
-  (response (scheduler/schedule desc cron task-endpoint)))
+(defn schedule-task [{:keys [desc schedule endpoint method]}]
+  (response (scheduler/schedule desc schedule endpoint method)))
 
 (defn unschedule-task [id]
   (response (scheduler/unschedule id)))

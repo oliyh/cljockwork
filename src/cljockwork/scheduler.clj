@@ -51,13 +51,13 @@
      :running-tasks (if started? (count (.getExecutingTasks scheduler)) 0)
      :timezone (-> scheduler .getTimeZone .getID)}))
 
-(defn schedule [desc scheduling-pattern endpoint]
+(defn schedule [desc scheduling-pattern endpoint method]
   (let [task {:id (str (UUID/randomUUID))
               :desc desc
               :endpoint endpoint
               :schedule scheduling-pattern
               :state :active
-              :method :get}]
+              :method (keyword method)}]
     (swap! tasks assoc (:id task) task)
     task))
 

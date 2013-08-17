@@ -22,7 +22,8 @@ function startScheduler() {
 function formToJson() {
     return {desc: $('#desc').val(),
 	    endpoint: $('#endpoint').val(),
-	    schedule: $('#schedule').val()}
+	    schedule: $('#schedule').val(),
+	    method: $('#method').val()}
 }
 
 function removeTask(id) {
