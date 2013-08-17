@@ -92,6 +92,7 @@ function populateTasks(continuous) {
 		var row = $('<tr/>')
 		    .append($('<td/>').html(e.id))
 		    .append($('<td/>').html(e.desc))
+		    .append($('<td/>').html(e.method))
 		    .append($('<td/>').html(e.endpoint))
 		    .append($('<td/>').html(e.schedule))
 		    .append($('<td/>').html((undefined == e.interval) ? 'N/A' : e.interval + 's'))
