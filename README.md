@@ -36,7 +36,7 @@ Pausing and activating tasks
 
 ### Extending
 
-Task actions may be extended by participating in the `hit-endpoint` multimethod.
+Task actions may be extended by participating in the `cljockwork.scheduler/hit-endpoint` multimethod.
 
 ### License
 
