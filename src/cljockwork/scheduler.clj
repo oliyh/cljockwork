@@ -55,10 +55,16 @@
     (swap! tasks dissoc id)
     task))
 
-(defn pause [id]
+(defn- set-state [id state]
   (let [task (get @tasks id)]
-    (swap! tasks assoc id (assoc task :state :paused))
+    (swap! tasks assoc id (assoc task :state state))
     task))
+
+(defn pause [id]
+  (set-state id :paused))
+
+(defn activate [id]
+  (set-state id :active))
 
 (defn add-prediction [now task]
   (let [prediction (.nextMatchingTime (Predictor. (:schedule task)))]

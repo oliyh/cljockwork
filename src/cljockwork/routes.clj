@@ -19,6 +19,7 @@
   (PUT "/tasks/add" {body :body} (api/schedule-task (:desc body) (:schedule body) (:endpoint body)))
   (DELETE "/tasks/:id/remove" [id] (api/unschedule-task id))
   (POST "/tasks/:id/pause" [id] (api/pause-task id))
+  (POST "/tasks/:id/activate" [id] (api/activate-task id))
 
   (GET "/events/" [] (api/recent-events)))
 

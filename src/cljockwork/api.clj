@@ -33,6 +33,9 @@
 (defn pause-task [id]
   (response (scheduler/pause id)))
 
+(defn activate-task [id]
+  (response (scheduler/activate id)))
+
 (defn validate-endpoint [endpoint]
   (try (= 200 (:status (client/get endpoint)))
        (catch Exception _ false)))
